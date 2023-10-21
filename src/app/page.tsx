@@ -96,7 +96,7 @@ export default function Home() {
             </ul>
             <div className="flex items-center gap-x-4">
               <button type="button">Login</button>
-              <button type="button" className="border-2 py-3 px-10 rounded-br-2xl rounded-tl-2xl w-full lg:w-auto">Signup</button>
+              <button type="button" className="border-2 py-3 px-10 rounded-br-2xl rounded-tl-2xl w-full lg:w-auto hover:bg-primary transition-all">Signup</button>
             </div>
           </div>
           <button type="button" className="lg:hidden">
@@ -117,8 +117,8 @@ export default function Home() {
                 In a coaching role, you ask the questions and rely more on your staff, who become the experts, to provide the information.
               </p>
               <div className="flex flex-col gap-y-4 items-center gap-x-8 mt-10 md:flex-row">
-                <button type="button" className="border-2 py-3 px-10 rounded-bl-2xl rounded-tr-2xl w-full lg:w-auto">Join as Student</button>
-                <button type="button" className="border-2 py-3 px-10 rounded-bl-2xl rounded-tr-2xl w-full lg:w-auto">Join as Instructor</button>
+                <button type="button" className="border-2 py-3 px-10 rounded-bl-2xl rounded-tr-2xl w-full lg:w-auto hover:bg-primary transition-all">Join as Student</button>
+                <button type="button" className="border-2 py-3 px-10 rounded-bl-2xl rounded-tr-2xl w-full lg:w-auto hover:bg-primary transition-all">Join as Instructor</button>
               </div>
               <Image src={Rocket} alt="Dashed Line" className="lg:absolute lg:block -bottom-[26rem] lg:-bottom-[36rem] xl:-bottom-[28rem] xl:left-52 2xl:left-64 -z-10" />
             </div>
@@ -140,7 +140,7 @@ export default function Home() {
             ))}
           </ul>
           <div className="flex justify-center mt-10">
-            <button type="button" className="border-2 py-3 px-10 rounded-bl-2xl rounded-tr-2xl text-white">Learn More</button>
+            <button type="button" className="border-2 py-3 px-10 rounded-bl-2xl rounded-tr-2xl text-white hover:bg-primary transition-all">Learn More</button>
           </div>
         </section>
 
@@ -188,7 +188,7 @@ export default function Home() {
               <div className="mt-20">
                 <h5 className="mb-2 font-bold text-xl">Ramjan Ali Anik</h5>
                 <span className="text-primary-50">Bostsolf.co</span>
-                <p className="mt-8 text-center text-primary-50 font-thin">
+                <p className="mt-8 text-center text-primary-50 text-sm">
                   One ipsum dolor sit amet, elit, sed do eiusmod tempor ut labore et
                   dolore magna aliqua. Quis ipsum ultrices gravida. Risus dolore
                   magna aliqua. Quis ipsum ultrices gravida.
@@ -254,7 +254,7 @@ export default function Home() {
               <p className="text-[#B7CBFA] mt-8">
                 Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
               </p>
-              <button type="button" className="border-2 py-3 px-10 rounded-bl-2xl rounded-tr-2xl w-full lg:w-auto mt-12 text-white">Learn More</button>
+              <button type="button" className="border-2 py-3 px-10 rounded-bl-2xl rounded-tr-2xl w-full lg:w-auto mt-12 text-white hover:bg-primary transition-all">Learn More</button>
             </div>
             <div className="flex flex-col items-center">
               <Image src={Trophies} alt="" />
