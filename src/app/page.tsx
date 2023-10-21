@@ -73,7 +73,7 @@ export default function Home() {
   return (
     <>
       <header className="custom-container text-white border-b border-dashed">
-        <div className="flex justify-between py-8">
+        <div className="flex justify-between items-center py-8">
           <h1 className="text-2xl"><span className="font-extrabold">Education</span>Temp</h1>
           <ul className="items-center gap-x-10 hidden lg:flex">
             <li>
