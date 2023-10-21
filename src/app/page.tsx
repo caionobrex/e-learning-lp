@@ -246,7 +246,7 @@ export default function Home() {
           </ul>
         </section>
 
-        <section className="mt-32 relative">
+        <section className="mt-16 lg:mt-32 relative">
           <div className="custom-container grid lg:grid-cols-2 gap-y-6 items-center">
             <div>
               <span className="text-primary block font-bold text-sm">Join Dominie At Best</span>
