@@ -11,14 +11,24 @@ import Trophies from '@/assets/trophies.png'
 import Circle from '@/assets/circle.svg'
 import Profile from '@/assets/profile.svg'
 import Basket from '@/assets/basket.svg'
+import Menu from '@/assets/menu.svg'
 
 const courses = [
   { img: '/images/courses/course-1.png', name: `Motion Graphics: Create a Nice Typography Animation`, category: { name: 'Web Development' } },
   { img: '/images/courses/course-2.png', name: `Motion Graphics: Create a Nice Typography Animation`, category: { name: 'Web Development' } },
   { img: '/images/courses/course-3.png', name: `Motion Graphics: Create a Nice Typography Animation`, category: { name: 'Web Development' } },
-  { img: '/images/courses/course-1.png', name: `Motion Graphics: Create a Nice Typography Animation`, category: { name: 'Web Development' } },
-  { img: '/images/courses/course-2.png', name: `Motion Graphics: Create a Nice Typography Animation`, category: { name: 'Web Development' } },
-  { img: '/images/courses/course-3.png', name: `Motion Graphics: Create a Nice Typography Animation`, category: { name: 'Web Development' } },
+  { img: '/images/courses/course-4.png', name: `Motion Graphics: Create a Nice Typography Animation`, category: { name: 'Web Development' } },
+  { img: '/images/courses/course-5.png', name: `Motion Graphics: Create a Nice Typography Animation`, category: { name: 'Web Development' } },
+  { img: '/images/courses/course-6.png', name: `Motion Graphics: Create a Nice Typography Animation`, category: { name: 'Web Development' } },
+]
+
+const categories = [
+  { img: '/images/categories/category-1.svg', name: `Digital Marketing` },
+  { img: '/images/categories/category-1.svg', name: `Web Development` },
+  { img: '/images/categories/category-1.svg', name: `Graphic Design` },
+  { img: '/images/categories/category-1.svg', name: `Art & Humanities` },
+  { img: '/images/categories/category-1.svg', name: `Personal Development` },
+  { img: '/images/categories/category-1.svg', name: `IT and Software` },
 ]
 
 export const CourseCard = ({ course }) => {
@@ -44,12 +54,12 @@ export const CourseCard = ({ course }) => {
 export const CategoryCard = ({ category }) => {
   return (
     <div className="bg-transparent border border-gray-600 rounded-3xl grid grid-cols-4 p-6 gap-x-6 items-center transition-all duration-500 lg:hover:-translate-y-5">
-      <div className="relative h-10 col-span-1">
-        <Image src={category.img} alt={category.name} layout="fill" objectFit="cover" />
+      <div className="relative p-4 col-span-1 bg-[#DF385B] rounded-xl flex justify-center items-center">
+        <Image src={category.img} alt={category.name} width={40} height={40} />
       </div>
       <div className="col-span-3">
         <h3 className="mt-2 text-white font-bold text-lg">
-          Digital Marketing
+          {category.name}
         </h3>
         <div className="flex justify-between items-center mt-3 text-primary-300 text-xs font-medium">
           <span className="text-primary-100">5,957 students</span>
@@ -89,6 +99,9 @@ export default function Home() {
               <button type="button" className="border-2 py-3 px-10 rounded-br-2xl rounded-tl-2xl w-full lg:w-auto">Signup</button>
             </div>
           </div>
+          <button type="button" className="lg:hidden">
+            <Image src={Menu} alt="mobile menu" width={25} height={25} />
+          </button>
         </div>
       </header>
 
@@ -136,9 +149,9 @@ export default function Home() {
           <div className="custom-container">
             <h2 className="text-center text-3xl text-white font-semibold mt-2">Top Categories</h2>
             <ul className="mt-10 grid md:grid-cols-2 lg:grid-cols-3 md:gap-x-6 lg:gap-x-10 gap-y-8 lg:mt-20">
-              {courses.map((course) => (
-                <li key={course.name}>
-                  <CategoryCard category={course} />
+              {categories.map((category) => (
+                <li key={category.name}>
+                  <CategoryCard category={category} />
                 </li>
               ))}
             </ul>
@@ -151,9 +164,36 @@ export default function Home() {
             <div className="flex flex-col items-center">
               <Image src={RocketLaunch} alt="ds" />
             </div>
-            <div className="text-white py-16 text-center">
+            <div className="text-white py-16 text-center px-6 lg:px-20">
               <h2 className="font-bold text-primary-500 mb-1">Testimonials</h2>
               <p className="font-bold text-2xl">what our students say?</p>
+              
+              <ul className="mt-14 grid grid-cols-3 md:grid-cols-5 gap-8">
+                <li>
+                  <Image src="/images/users/user1.png" alt="ds" width={90} height={90} />
+                </li>
+                <li>
+                  <Image src="/images/users/user2.png" alt="ds" width={90} height={90} />
+                </li>
+                <li>
+                  <Image src="/images/users/user3.png" alt="ds" width={90} height={90} />
+                </li>
+                <li>
+                  <Image src="/images/users/user4.png" alt="ds" width={90} height={90} />
+                </li>
+                <li>
+                  <Image src="/images/users/user5.png" alt="ds" width={90} height={90} />
+                </li>
+              </ul>
+              <div className="mt-20">
+                <h5 className="mb-2 font-bold text-xl">Ramjan Ali Anik</h5>
+                <span className="text-primary-50">Bostsolf.co</span>
+                <p className="mt-8 text-center text-primary-50 font-thin">
+                  One ipsum dolor sit amet, elit, sed do eiusmod tempor ut labore et
+                  dolore magna aliqua. Quis ipsum ultrices gravida. Risus dolore
+                  magna aliqua. Quis ipsum ultrices gravida.
+                </p>
+              </div>
             </div>
           </div>
         </section>
@@ -234,12 +274,8 @@ export default function Home() {
             <span className="text-2xl font-medium">Quick Links</span>
             <p className="font-thin">Veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolore eu fugiat nulla pariatur. </p>
           </div>
-          <div className="flex flex-col gap-y-4 lg:col-span-2">
-            <span className="text-2xl font-medium">Quick Links</span>
-            <p className="font-thin">Veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolore eu fugiat nulla pariatur. </p>
-          </div>
-          <div className="flex flex-col gap-y-4 lg:col-span-2">
-            <span className="text-2xl font-medium">Quick Links</span>
+          <div className="flex flex-col gap-y-4 lg:col-span-4">
+            <span className="text-2xl font-medium">Contact Us</span>
             <p className="font-thin">Veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolore eu fugiat nulla pariatur. </p>
           </div>
         </div>
