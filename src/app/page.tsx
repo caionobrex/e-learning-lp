@@ -35,7 +35,7 @@ export const CourseCard = ({ course }) => {
   return (
     <div className="bg-primary-400 rounded-2xl transition-all duration-500 lg:hover:-translate-y-5">
       <div className="relative h-48">
-        <Image src={course.img} alt={course.name} layout="fill" objectFit="cover" className="rounded-t-2xl" />
+        <Image src={course.img} alt={course.name} fill style={{ objectFit: 'cover' }} className="rounded-t-2xl" />
       </div>
       <div className="p-6">
         <span className="text-primary-300 text-xs font-semibold">{course.category.name}</span>
@@ -207,7 +207,7 @@ export default function Home() {
             <li>
               <div className="text-white rounded-2xl">
                 <div className="h-80 relative">
-                  <Image src="/images/blog/post-1.png" alt="Dashed Line" layout="fill" className="z-20 rounded-2xl" />
+                  <Image src="/images/blog/post-1.png" alt="Dashed Line" fill className="z-20 rounded-2xl" />
                 </div>
                 <div className="px-3">
                   <h3 className="mt-8 font-bold mb-2">
@@ -220,7 +220,7 @@ export default function Home() {
             <li>
               <div className="text-white rounded-2xl">
                 <div className="h-80 relative">
-                  <Image src="/images/blog/post-1.png" alt="Dashed Line" layout="fill" className="z-20 rounded-2xl" />
+                  <Image src="/images/blog/post-1.png" alt="Dashed Line" fill className="z-20 rounded-2xl" />
                 </div>
                 <div className="px-3">
                   <h3 className="mt-8 font-bold mb-2">
@@ -233,7 +233,7 @@ export default function Home() {
             <li>
               <div className="text-white rounded-2xl">
                 <div className="h-80 relative">
-                  <Image src="/images/blog/post-1.png" alt="Dashed Line" layout="fill" className="z-20 rounded-2xl" />
+                  <Image src="/images/blog/post-1.png" alt="Dashed Line" fill className="z-20 rounded-2xl" />
                 </div>
                 <div className="px-3">
                   <h3 className="mt-8 font-bold mb-2">
