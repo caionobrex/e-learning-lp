@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bodyBackgroundColor: #1B143F;
+}
+
+body {
+  background: var(--bodyBackgroundColor);
+}
+
+.custom-container {
+  width: min(90%, 1280px);
+  margin-inline: auto;
+}
