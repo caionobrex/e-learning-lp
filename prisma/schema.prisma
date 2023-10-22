@@ -1,0 +1,103 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// 5aba66f2cc35dab2a85e75529118159146fc38db - Vimeo
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+model User {
+  id              String            @id @default(uuid())
+  firstName       String
+  lastName        String
+  role            UserRole          @default(USER)
+  enrolledCourses EnrolledCourses[]
+  Course          Course[]
+}
+
+model Course {
+  id                  String                @id @default(uuid())
+  name                String
+  img                 String
+  description         String
+  price               Float
+  discount            Int
+  discountedPrice     Float
+  instructor          User                  @relation(fields: [userId], references: [id])
+  isFree              Boolean               @default(false)
+  rating              Int
+  duration            Int
+  EnrollerdCourses    EnrolledCourses[]
+  CoursesOnCategories CoursesOnCategories[]
+  Modules             Module[]
+  userId              String
+}
+
+model Category {
+  id                  String                @id @default(uuid())
+  name                String
+  img                 String
+  studentsCount       Int
+  coursesCount        Int                   @default(0)
+  CoursesOnCategories CoursesOnCategories[]
+}
+
+model Module {
+  id          String  @id @default(uuid())
+  name        String
+  description String
+  duration    Int
+  Course      Course? @relation(fields: [courseId], references: [id])
+  courseId    String?
+}
+
+model Class {
+  id          String      @id @default(uuid())
+  video       String
+  duration    Int
+  isFree      Boolean     @default(false)
+  name        String
+  thumbnail   String
+  description String
+  code        ClassCode[]
+}
+
+model ClassCode {
+  id       String  @id @default(uuid())
+  snippet  String
+  starstAt Int
+  endsAt   Int
+  Class    Class?  @relation(fields: [classId], references: [id])
+  classId  String?
+}
+
+model CoursesOnCategories {
+  id         String   @id @default(uuid())
+  course     Course   @relation(references: [id], fields: [courseId])
+  courseId   String
+  category   Category @relation(references: [id], fields: [categoryId])
+  categoryId String
+
+  @@unique([courseId, categoryId])
+}
+
+model EnrolledCourses {
+  id       String @id @default(uuid())
+  user     User   @relation(references: [id], fields: [userId])
+  userId   String
+  course   Course @relation(references: [id], fields: [courseId])
+  courseId String
+
+  @@unique([userId, courseId])
+}

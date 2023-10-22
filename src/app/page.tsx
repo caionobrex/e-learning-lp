@@ -1,34 +1,32 @@
-import Link from "next/link";
+import Arrow from '@/assets/arrow.svg';
+import Circle from '@/assets/circle.svg';
+import HeroDashedLine from '@/assets/heroDashedLine.svg';
+import HeroEllipse from '@/assets/heroEllipse.svg';
+import Internet from '@/assets/internet.svg';
+import Pencil from '@/assets/pencil.svg';
+import Rocket from '@/assets/rocket.svg';
+import RocketLaunch from '@/assets/rocketLaunch.png';
+import Trophies from '@/assets/trophies.png';
 import Image from "next/image";
-import HeroDashedLine from '@/assets/heroDashedLine.svg'
-import Rocket from '@/assets/rocket.svg'
-import HeroEllipse from '@/assets/heroEllipse.svg'
-import Pencil from '@/assets/pencil.svg'
-import Arrow from '@/assets/arrow.svg'
-import Internet from '@/assets/internet.svg'
-import RocketLaunch from '@/assets/rocketLaunch.png'
-import Trophies from '@/assets/trophies.png'
-import Circle from '@/assets/circle.svg'
-import Profile from '@/assets/profile.svg'
-import Basket from '@/assets/basket.svg'
-import Menu from '@/assets/menu.svg'
 
 const courses = [
-  { img: '/images/courses/course-1.png', name: `Motion Graphics: Create a Nice Typography Animation`, category: { name: 'Web Development' } },
-  { img: '/images/courses/course-2.png', name: `Motion Graphics: Create a Nice Typography Animation`, category: { name: 'Web Development' } },
-  { img: '/images/courses/course-3.png', name: `Motion Graphics: Create a Nice Typography Animation`, category: { name: 'Web Development' } },
-  { img: '/images/courses/course-4.png', name: `Motion Graphics: Create a Nice Typography Animation`, category: { name: 'Web Development' } },
-  { img: '/images/courses/course-5.png', name: `Motion Graphics: Create a Nice Typography Animation`, category: { name: 'Web Development' } },
-  { img: '/images/courses/course-6.png', name: `Motion Graphics: Create a Nice Typography Animation`, category: { name: 'Web Development' } },
+  { img: '/images/courses/course-1.png', name: `HTML`, category: { name: 'Desenvolvimento WEB' } },
+  { img: '/images/courses/course-2.png', name: `CSS`, category: { name: 'Desenvolvimento WEB' } },
+  { img: '/images/courses/course-4.png', name: `Logica de programação`, category: { name: 'Desenvolvimento WEB' } },
+  { img: '/images/courses/course-5.png', name: `Javascript`, category: { name: 'Desenvolvimento WEB' } },
+  { img: '/images/courses/course-3.png', name: `HTML + CSS + JS`, category: { name: 'Desenvolvimento WEB' } },
+  { img: '/images/courses/course-1.png', name: `React`, category: { name: 'Desenvolvimento WEB' } },
+  { img: '/images/courses/course-4.png', name: `NodeJS`, category: { name: 'Desenvolvimento WEB' } },
+  { img: '/images/courses/course-2.png', name: `Full-Stack`, category: { name: 'Desenvolvimento WEB' } },
 ]
 
 const categories = [
-  { img: '/images/categories/category-1.svg', name: `Digital Marketing` },
-  { img: '/images/categories/category-1.svg', name: `Web Development` },
-  { img: '/images/categories/category-1.svg', name: `Graphic Design` },
-  { img: '/images/categories/category-1.svg', name: `Art & Humanities` },
-  { img: '/images/categories/category-1.svg', name: `Personal Development` },
-  { img: '/images/categories/category-1.svg', name: `IT and Software` },
+  { img: '/images/categories/category-1.svg', name: `Programação` },
+  { img: '/images/categories/category-1.svg', name: `Desenvolvimento WEB` },
+  // { img: '/images/categories/category-1.svg', name: `Graphic Design` },
+  // { img: '/images/categories/category-1.svg', name: `Art & Humanities` },
+  // { img: '/images/categories/category-1.svg', name: `Personal Development` },
+  // { img: '/images/categories/category-1.svg', name: `IT and Software` },
 ]
 
 export const CourseCard = ({ course }) => {
@@ -72,39 +70,7 @@ export const CategoryCard = ({ category }) => {
 export default function Home() {
   return (
     <>
-      <header className="custom-container text-white border-b border-dashed">
-        <div className="flex justify-between items-center py-8">
-          <h1 className="text-2xl"><span className="font-extrabold">Education</span>Temp</h1>
-          <ul className="items-center gap-x-10 hidden lg:flex">
-            <li>
-              <Link href="">Home</Link>
-            </li>
-            <li>
-              <Link href="">Courses</Link>
-            </li>
-            <li>
-              <Link href="">Blog</Link>
-            </li>
-            <li>
-              <Link href="">Shop</Link>
-            </li>
-          </ul>
-          <div className="items-center gap-x-16 hidden lg:flex">
-            <ul className="flex items-center gap-x-5">
-              <li><Image src={Basket} alt="" /></li>
-              <li><Image src={Profile} alt="" /></li>
-            </ul>
-            <div className="flex items-center gap-x-4">
-              <button type="button">Login</button>
-              <button type="button" className="border-2 py-3 px-10 rounded-br-2xl rounded-tl-2xl w-full lg:w-auto hover:bg-primary transition-all">Signup</button>
-            </div>
-          </div>
-          <button type="button" className="lg:hidden">
-            <Image src={Menu} alt="mobile menu" width={25} height={25} />
-          </button>
-        </div>
-      </header>
-
+      <Image src={Circle} alt="Dashed Line" className="absolute -right-0 -top-72 -z-20 animate-pulse" />
       <main className="min-h-screen pb-28">
         <section className="custom-container text-white mt-8 md:mt-24">
           <div className="relative">
@@ -120,7 +86,7 @@ export default function Home() {
                 <button type="button" className="border-2 py-3 px-10 rounded-bl-2xl rounded-tr-2xl w-full lg:w-auto hover:bg-primary transition-all">Join as Student</button>
                 <button type="button" className="border-2 py-3 px-10 rounded-bl-2xl rounded-tr-2xl w-full lg:w-auto hover:bg-primary transition-all">Join as Instructor</button>
               </div>
-              <Image src={Rocket} alt="Dashed Line" className="lg:absolute lg:block -bottom-[26rem] lg:-bottom-[36rem] xl:-bottom-[28rem] xl:left-52 2xl:left-64 -z-10" />
+              <Image src={Rocket} alt="Dashed Line" className="lg:absolute lg:block -bottom-[26rem] lg:-bottom-[36rem] xl:-bottom-[30rem] xl:left-52 2xl:left-64 -z-10" />
             </div>
             <Image src={Pencil} alt="Dashed Line" className="hidden absolute xl:top-1/3 xl:block xl:left-28 -z-20" />
             <Image src={Arrow} alt="Dashed Line" className="hidden absolute top-1/2 xl:block -translate-y-1/2 left-72 -z-20" />
@@ -129,9 +95,9 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="custom-container mt-10 lg:mt-[26rem]">
+        <section className="custom-container mt-10 lg:mt-[34rem] xl:mt-[26rem]">
           <span className="text-primary text-center block font-bold text-sm">Join Dominie At Best</span>
-          <h2 className="text-center text-3xl text-white font-semibold mt-2">Featured Courses</h2>
+          <h2 className="text-center text-3xl text-white font-semibold mt-2">Nossos Cursos</h2>
           <ul className="mt-10 grid lg:grid-cols-3 md:grid-cols-2 gap-x-8 lg:gap-x-16 gap-y-8 lg:mt-20">
             {courses.map((course) => (
               <li key={course.name}>
@@ -140,14 +106,14 @@ export default function Home() {
             ))}
           </ul>
           <div className="flex justify-center mt-10">
-            <button type="button" className="border-2 py-3 px-10 rounded-bl-2xl rounded-tr-2xl text-white hover:bg-primary transition-all">Learn More</button>
+            <button type="button" className="border-2 py-3 px-10 rounded-bl-2xl rounded-tr-2xl text-white hover:bg-primary transition-all">Saiba Mais</button>
           </div>
         </section>
 
         <section className="mt-24 lg:mt-28 relative">
           <Image src={Circle} alt="Dashed Line" className="absolute -right-0 -top-96 -z-20" />
           <div className="custom-container">
-            <h2 className="text-center text-3xl text-white font-semibold mt-2">Top Categories</h2>
+            <h2 className="text-center text-3xl text-white font-semibold mt-2">Top Categorias</h2>
             <ul className="mt-10 grid md:grid-cols-2 lg:grid-cols-3 md:gap-x-6 lg:gap-x-10 gap-y-8 lg:mt-20">
               {categories.map((category) => (
                 <li key={category.name}>
@@ -165,8 +131,8 @@ export default function Home() {
               <Image src={RocketLaunch} alt="ds" />
             </div>
             <div className="text-white py-16 text-center px-6 lg:px-20">
-              <h2 className="font-bold text-primary-500 mb-1">Testimonials</h2>
-              <p className="font-bold text-2xl">what our students say?</p>
+              <h2 className="font-bold text-primary-500 mb-1">Testemunhas</h2>
+              <p className="font-bold text-2xl">O que nossos estudantes dizem?</p>
               
               <ul className="mt-14 grid grid-cols-3 md:grid-cols-5 gap-8">
                 <li>
@@ -263,26 +229,6 @@ export default function Home() {
           <Image src={Circle} alt="Dashed Line" className="absolute -right-0 -top-96 -z-20" />
         </section>
       </main>
-      
-      <footer className="bg-primary-400 pt-16 pb-8">
-        <div className="custom-container grid lg:grid-cols-10 gap-y-10 gap-x-16 text-white">
-          <div className="flex flex-col gap-y-4 lg:col-span-4">
-            <span className="text-2xl font-medium">EducationTemp</span>
-            <p className="font-thin">Veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolore eu fugiat nulla pariatur. </p>
-          </div>
-          <div className="flex flex-col gap-y-4 lg:col-span-2">
-            <span className="text-2xl font-medium">Quick Links</span>
-            <p className="font-thin">Veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolore eu fugiat nulla pariatur. </p>
-          </div>
-          <div className="flex flex-col gap-y-4 lg:col-span-4">
-            <span className="text-2xl font-medium">Contact Us</span>
-            <p className="font-thin">Veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolore eu fugiat nulla pariatur. </p>
-          </div>
-        </div>
-        <div className="text-center mt-20 text-white border-t border-gray-500 pt-6 custom-container font-thin">
-          Copyright 2023 | All Rights Reserved
-        </div>
-      </footer>
     </>
   )
 }

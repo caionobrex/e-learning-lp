@@ -10,6 +10,10 @@ body {
   background: var(--bodyBackgroundColor);
 }
 
+.body-bg {
+  background: #1B143F;
+}
+
 .custom-container {
   width: min(90%, 1280px);
   margin-inline: auto;
