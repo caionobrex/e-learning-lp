@@ -16,6 +16,7 @@ const config: Config = {
           400: '#2D2752',
           500: '#A99CFF',
           DEFAULT: '#CBC2FF',
+          600: '#1B143F',
         }
       },
       backgroundImage: {

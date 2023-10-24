@@ -29,6 +29,7 @@ model User {
 model Course {
   id                  String                @id @default(uuid())
   name                String
+  slug                String
   img                 String
   description         String
   price               Float
@@ -38,7 +39,7 @@ model Course {
   isFree              Boolean               @default(false)
   rating              Int
   duration            Int
-  EnrollerdCourses    EnrolledCourses[]
+  EnrolledCourses     EnrolledCourses[]
   CoursesOnCategories CoursesOnCategories[]
   Modules             Module[]
   userId              String
@@ -62,7 +63,7 @@ model Module {
   courseId    String?
 }
 
-model Class {
+model Lecture {
   id          String      @id @default(uuid())
   video       String
   duration    Int
@@ -73,12 +74,19 @@ model Class {
   code        ClassCode[]
 }
 
+model Testimonial {
+  id      String @id @default(uuid())
+  name    String
+  picture String
+  content String
+}
+
 model ClassCode {
-  id       String  @id @default(uuid())
+  id       String   @id @default(uuid())
   snippet  String
   starstAt Int
   endsAt   Int
-  Class    Class?  @relation(fields: [classId], references: [id])
+  Lecture  Lecture? @relation(fields: [classId], references: [id])
   classId  String?
 }
 
