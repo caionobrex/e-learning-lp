@@ -1,6 +1,7 @@
 import { prisma } from '@/db'
 import NextAuth from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
+import bcrypt from 'bcrypt'
 
 const handler = NextAuth({
   secret: process.env.NEXT_AUTH_SECRET,
@@ -16,7 +17,7 @@ const handler = NextAuth({
           where: { email: credentials?.username },
         })
         if (!user) return null
-        if (user.password === credentials?.password) {
+        if (bcrypt.compareSync(credentials!.password, user.password)) {
           return { ...user, name: user.firstName + ' ' + user.lastName }
         }
         return null
