@@ -3,9 +3,17 @@ export default async function Lecture() {
 
   return (
     <>
-      <main className="text-white mr-96 min-h-screen">
+      <header className="bg-primary-400 px-8 py-4 flex items-center justify-between">
+        <div className="">
+          <span>Complete Website Responsive Design: from Figma to Webflow to Website Design</span>
+        </div>
+        <div>
+          <button className="bg-white">Proxima Aula</button>
+        </div>
+      </header>
+      <main className="text-white min-h-screen">
         <div className="w-full bg-gray-900 flex flex-col items-center">
-          ds
+          <div></div>
         </div>
       </main>
       <footer className="bg-primary-400 pt-16 pb-8">
@@ -27,11 +35,11 @@ export default async function Lecture() {
           Copyright 2023 | All Rights Reserved
         </div>
       </footer>
-      <aside className="fixed top-0 right-0 bg-primary-400 w-96 h-full pt-8">
+      {/* <aside className="fixed top-0 right-0 bg-primary-400 w-96 h-full pt-8">
         <div className="custom-container">
           ds
         </div>
-      </aside>
+      </aside> */}
     </>
   )
 }

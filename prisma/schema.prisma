@@ -19,8 +19,11 @@ enum UserRole {
 
 model User {
   id              String            @id @default(uuid())
+  email           String            @unique
+  password        String
   firstName       String
   lastName        String
+  description     String?
   role            UserRole          @default(USER)
   enrolledCourses EnrolledCourses[]
   Course          Course[]
@@ -29,16 +32,21 @@ model User {
 model Course {
   id                  String                @id @default(uuid())
   name                String
-  slug                String
+  subTitle            String
+  slug                String                @unique
   img                 String
   description         String
   price               Float
   discount            Int
   discountedPrice     Float
+  video               String?
   instructor          User                  @relation(fields: [userId], references: [id])
   isFree              Boolean               @default(false)
   rating              Int
   duration            Int
+  studentsCount       Int
+  modulesCount        Int
+  lecturesCount       Int
   EnrolledCourses     EnrolledCourses[]
   CoursesOnCategories CoursesOnCategories[]
   Modules             Module[]
@@ -55,12 +63,14 @@ model Category {
 }
 
 model Module {
-  id          String  @id @default(uuid())
-  name        String
-  description String
-  duration    Int
-  Course      Course? @relation(fields: [courseId], references: [id])
-  courseId    String?
+  id            String    @id @default(uuid())
+  name          String
+  description   String
+  duration      Int
+  lecturesCount Int
+  lectures      Lecture[]
+  Course        Course?   @relation(fields: [courseId], references: [id])
+  courseId      String?
 }
 
 model Lecture {
@@ -72,6 +82,8 @@ model Lecture {
   thumbnail   String
   description String
   code        ClassCode[]
+  Module      Module?     @relation(fields: [moduleId], references: [id])
+  moduleId    String?
 }
 
 model Testimonial {

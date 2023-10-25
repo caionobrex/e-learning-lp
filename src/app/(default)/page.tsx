@@ -7,31 +7,32 @@ import Pencil from '@/assets/pencil.svg';
 import Rocket from '@/assets/rocket.svg';
 import RocketLaunch from '@/assets/rocketLaunch.png';
 import Trophies from '@/assets/trophies.png';
+import { prisma } from '@/db';
 import Image from "next/image";
 import Link from 'next/link';
 
-const courses = [
-  { img: '/images/courses/course-1.png', name: `HTML + CSS`, category: { name: 'Desenvolvimento WEB' } },
-  { img: '/images/courses/course-4.png', name: `Logica de programação`, category: { name: 'Desenvolvimento WEB' } },
-  { img: '/images/courses/course-5.png', name: `Javascript`, category: { name: 'Desenvolvimento WEB' } },
-  { img: '/images/courses/course-3.png', name: `HTML + CSS + JS`, category: { name: 'Desenvolvimento WEB' } },
-  { img: '/images/courses/course-1.png', name: `React`, category: { name: 'Desenvolvimento WEB' } },
-  { img: '/images/courses/course-4.png', name: `NodeJS`, category: { name: 'Desenvolvimento WEB' } },
-  { img: '/images/courses/course-2.png', name: `Full-Stack`, category: { name: 'Desenvolvimento WEB' } },
-]
+// const courses = [
+//   { img: '/images/courses/course-1.png', name: `HTML + CSS`, category: { name: 'Desenvolvimento WEB' } },
+//   { img: '/images/courses/course-4.png', name: `Logica de programação`, category: { name: 'Desenvolvimento WEB' } },
+//   { img: '/images/courses/course-5.png', name: `Javascript`, category: { name: 'Desenvolvimento WEB' } },
+//   { img: '/images/courses/course-3.png', name: `HTML + CSS + JS`, category: { name: 'Desenvolvimento WEB' } },
+//   { img: '/images/courses/course-1.png', name: `React`, category: { name: 'Desenvolvimento WEB' } },
+//   { img: '/images/courses/course-4.png', name: `NodeJS`, category: { name: 'Desenvolvimento WEB' } },
+//   { img: '/images/courses/course-2.png', name: `Full-Stack`, category: { name: 'Desenvolvimento WEB' } },
+// ]
 
-const categories = [
-  { img: '/images/categories/category-1.svg', name: `Programação` },
-  { img: '/images/categories/category-1.svg', name: `Desenvolvimento WEB` },
-  // { img: '/images/categories/category-1.svg', name: `Graphic Design` },
-  // { img: '/images/categories/category-1.svg', name: `Art & Humanities` },
-  // { img: '/images/categories/category-1.svg', name: `Personal Development` },
-  // { img: '/images/categories/category-1.svg', name: `IT and Software` },
-]
+// const categories = [
+//   { img: '/images/categories/category-1.svg', name: `Programação` },
+//   { img: '/images/categories/category-1.svg', name: `Desenvolvimento WEB` },
+//   // { img: '/images/categories/category-1.svg', name: `Graphic Design` },
+//   // { img: '/images/categories/category-1.svg', name: `Art & Humanities` },
+//   // { img: '/images/categories/category-1.svg', name: `Personal Development` },
+//   // { img: '/images/categories/category-1.svg', name: `IT and Software` },
+// ]
 
 export const CourseCard = ({ course }) => {
   return (
-    <Link href="/courses/html" className="bg-primary-400 rounded-2xl transition-all duration-500 lg:hover:-translate-y-5 block">
+    <Link href={`/courses/${course.slug}`} className="bg-primary-400 rounded-2xl transition-all duration-500 lg:hover:-translate-y-5 block">
       <div className="relative h-48">
         <Image src={course.img} alt={course.name} fill style={{ objectFit: 'cover' }} className="rounded-t-2xl" />
       </div>
@@ -41,7 +42,7 @@ export const CourseCard = ({ course }) => {
           {course.name}
         </h2>
         <div className="flex justify-between items-center mt-6 text-primary-300 text-xs font-semibold">
-          <span>5,957 students</span>
+          <span>{course.studentsCount} students</span>
           <span>01h 49m</span>
         </div>
       </div>
@@ -60,14 +61,19 @@ export const CategoryCard = ({ category }) => {
           {category.name}
         </h3>
         <div className="flex justify-between items-center mt-3 text-primary-300 text-xs font-medium">
-          <span className="text-primary-100">5,957 students</span>
+          <span className="text-primary-100">{category.studentsCount} students</span>
         </div>
       </div>
     </div>
   )
 }
 
-export default function Home() {
+export default async function Home() {
+  const [courses, categories] = await Promise.all([
+    prisma.course.findMany({ include: { CoursesOnCategories: { include: { category: true } } } }),
+    prisma.category.findMany()
+  ])
+
   return (
     <>
       <Image src={Circle} alt="Dashed Line" className="absolute -right-0 -top-72 -z-20 animate-pulse" />
@@ -100,8 +106,8 @@ export default function Home() {
           <h2 className="text-center text-3xl text-white font-semibold mt-2">Nossos Cursos</h2>
           <ul className="mt-10 grid lg:grid-cols-3 md:grid-cols-2 gap-x-8 lg:gap-x-16 gap-y-8 lg:mt-20">
             {courses.map((course) => (
-              <li key={course.name}>
-                <CourseCard course={course} />
+              <li key={course.id}>
+                <CourseCard course={{ ...course, category: { name: course.CoursesOnCategories[0].category.name } }} />
               </li>
             ))}
           </ul>

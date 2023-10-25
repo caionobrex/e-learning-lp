@@ -19,11 +19,6 @@ export default async function RootLayout({
     <SessionProvider>
       <html lang="en">
         <body className={montserrat.className}>
-          <header className="bg-primary-400 px-8 py-4">
-            <div className="">
-              Home
-            </div>
-          </header>
           {children}
         </body>
       </html>
