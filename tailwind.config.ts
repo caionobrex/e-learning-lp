@@ -17,7 +17,7 @@ const config: Config = {
           500: '#A99CFF',
           DEFAULT: '#CBC2FF',
           600: '#1B143F',
-        }
+        },
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',

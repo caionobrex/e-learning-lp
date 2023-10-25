@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  --bodyBackgroundColor: #1B143F;
+  --bodyBackgroundColor: #1b143f;
 }
 
 body {
@@ -11,10 +11,15 @@ body {
 }
 
 .body-bg {
-  background: #1B143F;
+  background: #1b143f;
 }
 
 .custom-container {
   width: min(90%, 1280px);
+  margin-inline: auto;
+}
+
+.lecture-container {
+  width: min(90%, 1800px);
   margin-inline: auto;
 }

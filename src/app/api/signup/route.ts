@@ -1,4 +1,4 @@
-import { prisma } from "@/db"
+import { prisma } from '@/db'
 
 const handler = async (req: Request) => {
   const { email, firstName, lastName, password } = await req.json()
@@ -12,9 +12,9 @@ const handler = async (req: Request) => {
   if (user) {
     return new Response('User already exists', { status: 400 })
   }
-  
+
   await prisma.user.create({
-    data: { email, firstName, lastName, password }
+    data: { email, firstName, lastName, password },
   })
 }
 

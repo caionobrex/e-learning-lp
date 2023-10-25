@@ -1,7 +1,7 @@
-import { SessionProvider } from '@/providers/SessionProvider';
-import type { Metadata } from 'next';
-import { Montserrat } from 'next/font/google';
-import '../../css/globals.css';
+import { SessionProvider } from '@/providers/SessionProvider'
+import type { Metadata } from 'next'
+import { Montserrat } from 'next/font/google'
+import '../../css/globals.css'
 
 const montserrat = Montserrat({ subsets: ['latin'] })
 
@@ -18,9 +18,7 @@ export default async function RootLayout({
   return (
     <SessionProvider>
       <html lang="en">
-        <body className={montserrat.className}>
-          {children}
-        </body>
+        <body className={montserrat.className}>{children}</body>
       </html>
     </SessionProvider>
   )
