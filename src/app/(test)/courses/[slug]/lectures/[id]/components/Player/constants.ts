@@ -1,0 +1,1 @@
+export const SAVE_PROGRESS_INTERVAL = 30000

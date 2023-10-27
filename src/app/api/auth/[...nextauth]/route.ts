@@ -5,6 +5,13 @@ import bcrypt from 'bcrypt'
 
 const handler = NextAuth({
   secret: process.env.NEXT_AUTH_SECRET,
+  // callbacks: {
+  //   jwt: async ({ token, user, account, profile, isNewUser }) => {
+  //     console.log('user', user)
+  //     console.log('token jwt function', token)
+  //     return { ...token, test: 'dsadas' }
+  //   },
+  // },
   providers: [
     CredentialsProvider({
       name: 'Credentials',

@@ -2,20 +2,25 @@
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import { ISignInForm } from './types'
+import { ISignUpForm } from './types'
 // import { AuthService } from '@/services/auth'
 // import { schema } from './schema'
 // import { yupResolver } from '@hookform/resolvers/yup'
 
-export const useSignInCardController = () => {
+export const useSignInCardController = ({
+  defaultValues,
+}: {
+  defaultValues?: Partial<ISignUpForm>
+}) => {
   const router = useRouter()
   const {
     register,
     setValue,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<ISignInForm>({
+  } = useForm<ISignUpForm>({
     // resolver: yupResolver(schema),
+    defaultValues,
   })
 
   const handleOnChangePhoneNumber = (
@@ -24,21 +29,16 @@ export const useSignInCardController = () => {
     // setValue('phoneNumber', formatToPhone(e.currentTarget.value))
   }
 
-  const handleOnSubmit = handleSubmit(async (values: ISignInForm) => {
+  const handleOnSubmit = handleSubmit(async (values: ISignUpForm) => {
     try {
       // await AuthService.sendAccessCode(values.phoneNumber)
     } catch {
     } finally {
-      localStorage.setItem('phoneNumber', values.phoneNumber)
       router.push('/confirm-access-code')
     }
   })
 
   const handleCreateAccount = () => router.push('/signup')
-
-  useEffect(() => {
-    localStorage.removeItem('phoneNumber')
-  }, [])
 
   return {
     errors,

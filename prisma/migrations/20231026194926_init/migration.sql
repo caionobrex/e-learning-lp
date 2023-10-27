@@ -5,6 +5,8 @@ CREATE TABLE `User` (
     `password` VARCHAR(191) NOT NULL,
     `firstName` VARCHAR(191) NOT NULL,
     `lastName` VARCHAR(191) NOT NULL,
+    `title` VARCHAR(191) NULL,
+    `picture` VARCHAR(191) NULL,
     `description` VARCHAR(191) NULL,
     `role` ENUM('USER', 'ADMIN') NOT NULL DEFAULT 'USER',
 
@@ -52,6 +54,7 @@ CREATE TABLE `Module` (
     `id` VARCHAR(191) NOT NULL,
     `name` VARCHAR(191) NOT NULL,
     `description` VARCHAR(191) NOT NULL,
+    `index` INTEGER NULL,
     `duration` INTEGER NOT NULL,
     `lecturesCount` INTEGER NOT NULL,
     `courseId` VARCHAR(191) NULL,
@@ -84,6 +87,21 @@ CREATE TABLE `Testimonial` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `Post` (
+    `id` VARCHAR(191) NOT NULL,
+    `title` VARCHAR(191) NOT NULL,
+    `slug` VARCHAR(191) NOT NULL,
+    `summary` VARCHAR(191) NOT NULL,
+    `thumb` VARCHAR(191) NOT NULL,
+    `content` VARCHAR(191) NOT NULL,
+    `userId` VARCHAR(191) NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `ClassCode` (
     `id` VARCHAR(191) NOT NULL,
     `snippet` VARCHAR(191) NOT NULL,
@@ -95,23 +113,31 @@ CREATE TABLE `ClassCode` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `LectureProgress` (
+    `userId` VARCHAR(191) NOT NULL,
+    `lectureId` VARCHAR(191) NOT NULL,
+    `progress` INTEGER NOT NULL,
+    `courseId` VARCHAR(191) NOT NULL,
+    `updatedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+
+    PRIMARY KEY (`userId`, `lectureId`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `CoursesOnCategories` (
-    `id` VARCHAR(191) NOT NULL,
     `courseId` VARCHAR(191) NOT NULL,
     `categoryId` VARCHAR(191) NOT NULL,
 
-    UNIQUE INDEX `CoursesOnCategories_courseId_categoryId_key`(`courseId`, `categoryId`),
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`courseId`, `categoryId`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `EnrolledCourses` (
-    `id` VARCHAR(191) NOT NULL,
     `userId` VARCHAR(191) NOT NULL,
     `courseId` VARCHAR(191) NOT NULL,
+    `progress` INTEGER NOT NULL,
 
-    UNIQUE INDEX `EnrolledCourses_userId_courseId_key`(`userId`, `courseId`),
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`userId`, `courseId`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
@@ -124,7 +150,19 @@ ALTER TABLE `Module` ADD CONSTRAINT `Module_courseId_fkey` FOREIGN KEY (`courseI
 ALTER TABLE `Lecture` ADD CONSTRAINT `Lecture_moduleId_fkey` FOREIGN KEY (`moduleId`) REFERENCES `Module`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE `Post` ADD CONSTRAINT `Post_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE `ClassCode` ADD CONSTRAINT `ClassCode_classId_fkey` FOREIGN KEY (`classId`) REFERENCES `Lecture`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `LectureProgress` ADD CONSTRAINT `LectureProgress_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `LectureProgress` ADD CONSTRAINT `LectureProgress_lectureId_fkey` FOREIGN KEY (`lectureId`) REFERENCES `Lecture`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `LectureProgress` ADD CONSTRAINT `LectureProgress_courseId_fkey` FOREIGN KEY (`courseId`) REFERENCES `Course`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `CoursesOnCategories` ADD CONSTRAINT `CoursesOnCategories_courseId_fkey` FOREIGN KEY (`courseId`) REFERENCES `Course`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

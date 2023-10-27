@@ -1,6 +1,6 @@
 import { getServerSession } from 'next-auth'
 import { redirect } from 'next/navigation'
-import { SignInCard } from './components/SignInCard'
+import { SignUpCard } from './components/SignUpCard'
 
 export default async function SignIn() {
   const session = await getServerSession()
@@ -25,7 +25,7 @@ export default async function SignIn() {
             </div>
           </div>
           <div className="flex flex-col justify-center items-center lg:col-span-2">
-            <SignInCard />
+            <SignUpCard />
           </div>
         </div>
       </div>

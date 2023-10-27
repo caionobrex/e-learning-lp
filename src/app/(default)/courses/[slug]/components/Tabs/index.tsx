@@ -2,10 +2,13 @@
 
 import * as RadixTabs from '@radix-ui/react-tabs'
 import { useTabsController } from './useTabsController'
-import * as Collapsible from '@radix-ui/react-collapsible'
 import Image from 'next/image'
 import RightArrow from '@/assets/rightArrow.svg'
 import { Course, Prisma } from '@prisma/client'
+import FolderIcon from '@/assets/FolderNotchOpen.png'
+import PlayIcon from '@/assets/PlayCircle.svg'
+import Clock from '@/assets/Clock.svg'
+import { Collapsible } from './components/Collapsible'
 
 export const Tabs = ({
   course,
@@ -19,7 +22,7 @@ export const Tabs = ({
 
   return (
     <RadixTabs.Root defaultValue="tab1">
-      <RadixTabs.List className="gap-x-4 grid grid-cols-4 border-b border-gray-600">
+      <RadixTabs.List className="gap-x-4 grid grid-cols-3 border-b border-gray-600">
         <RadixTabs.Trigger
           value="tab1"
           className={getTabClassName(0)}
@@ -41,13 +44,13 @@ export const Tabs = ({
         >
           Instrutor
         </RadixTabs.Trigger>
-        <RadixTabs.Trigger
+        {/* <RadixTabs.Trigger
           value="tab4"
           className={getTabClassName(3)}
           onClick={onClickHandler(3)}
         >
           Avaliações
-        </RadixTabs.Trigger>
+        </RadixTabs.Trigger> */}
       </RadixTabs.List>
       <RadixTabs.Content value="tab1" className="pt-10">
         <ul className="flex flex-col gap-y-12">
@@ -92,50 +95,31 @@ export const Tabs = ({
         </ul>
       </RadixTabs.Content>
       <RadixTabs.Content value="tab2" className="pt-10">
-        <header className="flex items-center justify-between gap-x-3 mb-4">
+        <header className="flex flex-col gap-y-3 lg:flex-row lg:items-center lg:justify-between gap-x-3 mb-6">
           <h3 className="text-2xl font-semibold">Conteúdo</h3>
           <ul className="flex items-center gap-x-6 text-sm">
             <li className="flex items-center gap-x-2">
-              <span>Icon</span>
-              <span>{course.Modules.length}</span>
+              <Image src={FolderIcon} alt="Orange open folder png" />
+              <span>{course.Modules.length} módulos</span>
             </li>
             <li className="flex items-center gap-x-2">
-              <span>Icon</span>
-              <span>{course.lecturesCount}</span>
+              <Image src={PlayIcon} alt="Play circle icon svg" />
+              <span>{course.lecturesCount} aulas</span>
             </li>
             <li className="flex items-center gap-x-2">
-              <span>Icon</span>
+              <Image src={Clock} alt="Orange clock svg" />
               <span>{course.duration}</span>
             </li>
           </ul>
         </header>
-        <div className="border border-primary-400 p-4">
-          {course.Modules.map((module) => (
-            <Collapsible.Root className="border-b pb-4" key={module.id}>
-              <Collapsible.Trigger className="w-full">
-                <div className="flex items-center justify-between w-full">
-                  <span className="font-medium">{module.name}</span>
-                  <ul className="flex items-center gap-x-6 text-sm">
-                    <li className="flex items-center gap-x-2">
-                      <span>Icon</span>
-                      <span>{module.lecturesCount}</span>
-                    </li>
-                    <li className="flex items-center gap-x-2">
-                      <span>Icon</span>
-                      <span>{module.duration}</span>
-                    </li>
-                  </ul>
-                </div>
-              </Collapsible.Trigger>
-              <Collapsible.Content className="pt-3">
-                <ul className="flex flex-col gap-y-1">
-                  {module.lectures.map((lecture) => (
-                    <li key={lecture.id}>{lecture.name}</li>
-                  ))}
-                </ul>
-              </Collapsible.Content>
-            </Collapsible.Root>
-          ))}
+        <div className="border border-primary-400 px-4 py-6">
+          <ul className="flex flex-col gap-y-6">
+            {course.Modules.map((module, index) => (
+              <li key={module.id}>
+                <Collapsible module={module} defaultOpen={index === 0} />
+              </li>
+            ))}
+          </ul>
         </div>
       </RadixTabs.Content>
       <RadixTabs.Content value="tab3" className="pt-10">
@@ -143,18 +127,24 @@ export const Tabs = ({
           <h3 className="text-2xl font-semibold">Instrutor do Curso</h3>
         </header>
         <div className="border border-primary-400 p-6 flex gap-x-6">
-          <div className="w-32 h-32 bg-white rounded-full relative">
-            {course.instructor.picture ? (
+          {course.instructor.picture ? (
+            <div className="w-32 h-32 bg-primary-400 rounded-full relative">
               <Image
                 src={course.instructor.picture}
                 alt=""
                 fill
                 className="rounded-full object-cover"
               />
-            ) : (
-              <span>{course.instructor.firstName}</span>
-            )}
-          </div>
+            </div>
+          ) : (
+            <div className="w-32 h-32 bg-primary-400 rounded-full relative flex justify-center items-center">
+              <span className="font-bold text-xl">
+                {course.instructor.firstName.split('')[0] +
+                  course.instructor.lastName.split('')[0]}
+              </span>
+            </div>
+          )}
+
           <div className="flex-1 flex flex-col gap-y-4">
             <header className="flex flex-col gap-y-1">
               <h5 className="text-xl font-semibold">
@@ -176,9 +166,11 @@ export const Tabs = ({
           </div>
         </div>
       </RadixTabs.Content>
-      <RadixTabs.Content value="tab4" className="pt-10">
-        dsa
-      </RadixTabs.Content>
+      {/* <RadixTabs.Content value="tab4" className="pt-10">
+        <header className="flex items-center justify-between gap-x-3 mb-6">
+          <h3 className="text-2xl font-semibold">Instrutor do Curso</h3>
+        </header>
+      </RadixTabs.Content> */}
     </RadixTabs.Root>
   )
 }

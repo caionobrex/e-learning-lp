@@ -30,6 +30,7 @@ model User {
   posts           Post[]
   enrolledCourses EnrolledCourses[]
   Course          Course[]
+  LectureProgress LectureProgress[]
 }
 
 model Course {
@@ -54,6 +55,7 @@ model Course {
   CoursesOnCategories CoursesOnCategories[]
   Modules             Module[]
   userId              String
+  LectureProgress     LectureProgress[]
 }
 
 model Category {
@@ -69,6 +71,7 @@ model Module {
   id            String    @id @default(uuid())
   name          String
   description   String
+  index         Int?
   duration      Int
   lecturesCount Int
   lectures      Lecture[]
@@ -77,16 +80,17 @@ model Module {
 }
 
 model Lecture {
-  id          String      @id @default(uuid())
-  video       String
-  duration    Int
-  isFree      Boolean     @default(false)
-  name        String
-  thumbnail   String
-  description String
-  code        ClassCode[]
-  Module      Module?     @relation(fields: [moduleId], references: [id])
-  moduleId    String?
+  id              String            @id @default(uuid())
+  video           String
+  duration        Int
+  isFree          Boolean           @default(false)
+  name            String
+  thumbnail       String
+  description     String
+  code            ClassCode[]
+  Module          Module?           @relation(fields: [moduleId], references: [id])
+  moduleId        String?
+  LectureProgress LectureProgress[]
 }
 
 model Testimonial {
@@ -118,22 +122,34 @@ model ClassCode {
   classId  String?
 }
 
+model LectureProgress {
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  lecture   Lecture  @relation(fields: [lectureId], references: [id])
+  lectureId String
+  progress  Int
+  course    Course   @relation(fields: [courseId], references: [id])
+  courseId  String
+  updatedAt DateTime @default(now())
+
+  @@id([userId, lectureId])
+}
+
 model CoursesOnCategories {
-  id         String   @id @default(uuid())
   course     Course   @relation(references: [id], fields: [courseId])
   courseId   String
   category   Category @relation(references: [id], fields: [categoryId])
   categoryId String
 
-  @@unique([courseId, categoryId])
+  @@id([courseId, categoryId])
 }
 
 model EnrolledCourses {
-  id       String @id @default(uuid())
   user     User   @relation(references: [id], fields: [userId])
   userId   String
   course   Course @relation(references: [id], fields: [courseId])
   courseId String
+  progress Int
 
-  @@unique([userId, courseId])
+  @@id([userId, courseId])
 }

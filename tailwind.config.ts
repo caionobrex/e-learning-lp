@@ -18,6 +18,12 @@ const config: Config = {
           DEFAULT: '#CBC2FF',
           600: '#1B143F',
         },
+        secondary: {
+          DEFAULT: '#B614DE',
+        },
+        third: {
+          DEFAULT: '#7414DE',
+        },
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',

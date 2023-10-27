@@ -1,8 +1,13 @@
 'use client'
 
+import { ISignUpForm } from './types'
 import { useSignInCardController } from './useSignInCardController'
 
-export function SignInCard() {
+export function SignUpCard({
+  defaultValues,
+}: {
+  defaultValues?: Partial<ISignUpForm>
+}) {
   const {
     errors,
     isSubmitting,
@@ -10,7 +15,7 @@ export function SignInCard() {
     handleOnChangePhoneNumber,
     handleOnSubmit,
     handleCreateAccount,
-  } = useSignInCardController()
+  } = useSignInCardController({ defaultValues })
 
   return (
     <div className="shadow-md rounded-lg px-6 py-8 bg-white w-full sm:w-96">
@@ -30,12 +35,12 @@ export function SignInCard() {
               className="border w-full rounded-md px-2 py-3 outline-none"
               placeholder="(DDD) 9 9999-9999"
               maxLength={16}
-              {...register('phoneNumber', {
+              {...register('email', {
                 onChange: handleOnChangePhoneNumber,
               })}
             />
-            {errors.phoneNumber && (
-              <p className="text-red-500 mt-2">{errors.phoneNumber.message}</p>
+            {errors.email && (
+              <p className="text-red-500 mt-2">{errors.email.message}</p>
             )}
           </div>
         </div>
@@ -53,12 +58,12 @@ export function SignInCard() {
               className="border w-full rounded-md px-2 py-3 outline-none"
               placeholder="(DDD) 9 9999-9999"
               maxLength={16}
-              {...register('phoneNumber', {
+              {...register('firstName', {
                 onChange: handleOnChangePhoneNumber,
               })}
             />
-            {errors.phoneNumber && (
-              <p className="text-red-500 mt-2">{errors.phoneNumber.message}</p>
+            {errors.firstName && (
+              <p className="text-red-500 mt-2">{errors.firstName.message}</p>
             )}
           </div>
         </div>
@@ -76,12 +81,12 @@ export function SignInCard() {
               className="border w-full rounded-md px-2 py-3 outline-none"
               placeholder="(DDD) 9 9999-9999"
               maxLength={16}
-              {...register('phoneNumber', {
+              {...register('password', {
                 onChange: handleOnChangePhoneNumber,
               })}
             />
-            {errors.phoneNumber && (
-              <p className="text-red-500 mt-2">{errors.phoneNumber.message}</p>
+            {errors.password && (
+              <p className="text-red-500 mt-2">{errors.password.message}</p>
             )}
           </div>
         </div>
@@ -91,7 +96,7 @@ export function SignInCard() {
           // className={`mt-6 ${
           //   errors.phoneNumber && 'opacity-50'
           // } bg-primary-400 w-full rounded-md py-2 font-medium text-white disabled:bg-opacity-60`}
-          disabled={!!errors.phoneNumber || isSubmitting}
+          disabled={!!errors || isSubmitting}
         >
           {isSubmitting ? 'Entrando...' : 'Entrar'}
         </button>

@@ -20,6 +20,6 @@ body {
 }
 
 .lecture-container {
-  width: min(90%, 1800px);
+  width: min(95%, 1800px);
   margin-inline: auto;
 }

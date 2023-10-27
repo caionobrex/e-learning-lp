@@ -1,176 +1,97 @@
 'use client'
 
-import { useEffect } from 'react'
-import { loadMercadoPago } from '@mercadopago/sdk-js'
+import { PaymentMethod } from '@/enums/paymentMethod'
+import { useCartStore } from '@/stores/cart'
+import { initMercadoPago } from '@mercadopago/sdk-react'
+import { Course } from '@prisma/client'
+import { useSession } from 'next-auth/react'
+import Image from 'next/image'
+import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
+
+initMercadoPago('TEST-290653cb-94d1-4fc7-8a53-083a167255a7')
+
+const paymentMethodMap = {
+  [PaymentMethod.PIX]: 'PIX',
+  [PaymentMethod.CARD]: 'Cartão de crédito',
+  [PaymentMethod.BOLETO]: 'Boleto',
+}
+
+export interface ICartData {
+  products: Course[]
+  total: number
+}
 
 export default function Cart() {
-  const cart = [
-    {
-      name: 'course 1',
-      total: 200,
-    },
-  ]
+  const session = useSession()
+  const router = useRouter()
+  const { products, total } = useCartStore((state) => ({
+    products: state.products,
+    total: state.total,
+  }))
+  const [cart, setCart] = useState<ICartData>({
+    products: [],
+    total: 0,
+  })
+
+  const payHandler = () => {
+    // if (!session) {
+    // }
+    // try {
+    //   await PaymentsService.pay({ products: cart.products.map((p) => p.id) })
+    // } catch (err) {
+    //   console.log(err)
+    // }
+    router.push('/checkout')
+  }
 
   useEffect(() => {
-    ;(async () => {
-      await loadMercadoPago()
-      const mp = {} as any
-
-      // const cardForm = mp.cardForm({
-      //   amount: "100.5",
-      //   iframe: true,
-      //   form: {
-      //     id: "form-checkout",
-      //     cardNumber: {
-      //       id: "form-checkout__cardNumber",
-      //       placeholder: "Número do cartão",
-      //     },
-      //     expirationDate: {
-      //       id: "form-checkout__expirationDate",
-      //       placeholder: "MM/YY",
-      //     },
-      //     securityCode: {
-      //       id: "form-checkout__securityCode",
-      //       placeholder: "Código de segurança",
-      //     },
-      //     cardholderName: {
-      //       id: "form-checkout__cardholderName",
-      //       placeholder: "Titular do cartão",
-      //     },
-      //     issuer: {
-      //       id: "form-checkout__issuer",
-      //       placeholder: "Banco emissor",
-      //     },
-      //     installments: {
-      //       id: "form-checkout__installments",
-      //       placeholder: "Parcelas",
-      //     },
-      //     identificationType: {
-      //       id: "form-checkout__identificationType",
-      //       placeholder: "Tipo de documento",
-      //     },
-      //     identificationNumber: {
-      //       id: "form-checkout__identificationNumber",
-      //       placeholder: "Número do documento",
-      //     },
-      //     cardholderEmail: {
-      //       id: "form-checkout__cardholderEmail",
-      //       placeholder: "E-mail",
-      //     },
-      //   },
-      //   callbacks: {
-      //     onFormMounted: error => {
-      //       if (error) return console.warn("Form Mounted handling error: ", error);
-      //       console.log("Form mounted");
-      //     },
-      //     onSubmit: event => {
-      //       event.preventDefault();
-
-      //       const {
-      //         paymentMethodId: payment_method_id,
-      //         issuerId: issuer_id,
-      //         cardholderEmail: email,
-      //         amount,
-      //         token,
-      //         installments,
-      //         identificationNumber,
-      //         identificationType,
-      //       } = cardForm.getCardFormData();
-
-      //       fetch("/pay", {
-      //         method: "POST",
-      //         headers: {
-      //           "Content-Type": "application/json",
-      //         },
-      //         body: JSON.stringify({
-      //           token,
-      //           issuer_id,
-      //           payment_method_id,
-      //           transaction_amount: +amount,
-      //           installments: +installments,
-      //           description: "Descrição do produto",
-      //           payer: {
-      //             email,
-      //             identification: {
-      //               type: identificationType,
-      //               number: identificationNumber,
-      //             },
-      //           },
-      //         }),
-      //       });
-      //     },
-      //     onFetching: (resource) => {
-      //       console.log("Fetching resource: ", resource);
-
-      //       // Animate progress bar
-      //       const progressBar = document.querySelector(".progress-bar");
-      //       progressBar.removeAttribute("value");
-
-      //       return () => {
-      //         progressBar.setAttribute("value", "0");
-      //       };
-      //     }
-      //   },
-      // });
-    })()
-  }, [])
+    setCart({
+      products,
+      total,
+    })
+  }, [products, total])
 
   return (
     <main className="min-h-screen custom-container text-white pt-10">
-      <form className="grid grid-cols-2 gap-x-20" id="formCheckout">
-        <div>
-          <h1 className="text-3xl font-semibold">Método de Pagamento</h1>
-          <ul className="mt-8 flex flex-col gap-y-4">
-            <li>
-              <button
-                className="border px-6 py-3 w-full text-left"
-                type="button"
+      <form className="grid grid-cols-6 gap-x-20" id="formCheckout">
+        <div className="col-span-4">
+          <h2 className="mb-8 text-3xl font-semibold">Seus Items</h2>
+          <ul className="flex flex-col gap-y-5">
+            {cart.products.map((product) => (
+              <li
+                key={product.id}
+                className="flex items-center justify-between w-full"
               >
-                Pix
-              </button>
-            </li>
-            <li>
-              <button
-                className="border px-6 py-3 w-full text-left"
-                type="button"
-              >
-                Boleto
-              </button>
-            </li>
-            <li>
-              <button
-                className="border px-6 py-3 w-full text-left"
-                type="button"
-              >
-                Adicionar Cartão
-              </button>
-            </li>
+                <div className="flex items-center gap-x-6">
+                  <div className="relative w-16 h-16 rounded-full">
+                    <Image
+                      src={product.img}
+                      alt={product.name}
+                      fill
+                      className="object-cover rounded-full"
+                    />
+                  </div>
+                  <span className="font-medium text-xl">{product.name}</span>
+                </div>
+                <span className="font-medium text-lg">
+                  {product.discountedPrice.toLocaleString('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL',
+                  })}
+                </span>
+              </li>
+            ))}
           </ul>
-          <div className="grid grid-cols-2 gap-x-6 gap-y-4 mt-8">
-            <div className="flex flex-col gap-y-2 col-span-2">
-              <label htmlFor="">Name</label>
-              <input type="text" className="w-full py-2" />
-            </div>
-            <div className="flex flex-col gap-y-2 col-span-2">
-              <label htmlFor="">Name</label>
-              <input type="text" className="w-full" />
-            </div>
-            <div className="flex flex-col gap-y-2">
-              <label htmlFor="">Name</label>
-              <input type="text" className="w-full" />
-            </div>
-            <div className="flex flex-col gap-y-2">
-              <label htmlFor="">Name</label>
-              <input type="text" className="w-full" />
-            </div>
-          </div>
         </div>
-        <div className="px-8">
-          <div className="shadow-md border p-6 bg-primary-400 border-primary-300">
+        <div className="col-span-2">
+          <div className="shadow-md p-6 bg-gray-900">
             <header className="border-b pb-2">
               Cursos
               <ul className="mt-3">
-                <li>course 1</li>
+                {cart.products.map((product) => (
+                  <li key={product.id}>{product.name}</li>
+                ))}
               </ul>
             </header>
             <main className="border-b pb-4 mt-6">
@@ -181,7 +102,7 @@ export default function Cart() {
                   <span>$61.97 USD</span>
                 </li>
                 <li className="flex items-center justify-between">
-                  <span>Coupon Discount</span>
+                  <span>Cupom de Desconto</span>
                   <span>8%</span>
                 </li>
               </ul>
@@ -189,9 +110,19 @@ export default function Cart() {
             <footer className="mt-6">
               <div className="flex items-center justify-between">
                 <span>Total:</span>
-                <span className="font-semibold text-xl">$75.00 BRL</span>
+                <span className="font-semibold text-xl">
+                  {cart.total.toLocaleString('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL',
+                  })}{' '}
+                  BRL
+                </span>
               </div>
-              <button type="button" className="mt-3 w-full bg-primary-500 py-2">
+              <button
+                type="button"
+                className="mt-8 w-full bg-secondary py-3 rounded-bl-2xl rounded-tr-2xl font-medium"
+                onClick={payHandler}
+              >
                 Pagar
               </button>
             </footer>

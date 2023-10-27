@@ -10,6 +10,7 @@ import Trophies from '@/assets/trophies.png'
 import { prisma } from '@/db'
 import Image from 'next/image'
 import Link from 'next/link'
+import { format } from 'date-fns'
 
 // const courses = [
 //   { img: '/images/courses/course-1.png', name: `HTML + CSS`, category: { name: 'Desenvolvimento WEB' } },
@@ -78,11 +79,12 @@ export const CategoryCard = ({ category }) => {
 }
 
 export default async function Home() {
-  const [courses, categories] = await Promise.all([
+  const [courses, categories, posts] = await Promise.all([
     prisma.course.findMany({
       include: { CoursesOnCategories: { include: { category: true } } },
     }),
     prisma.category.findMany(),
+    prisma.post.findMany(),
   ])
 
   return (
@@ -275,67 +277,36 @@ export default async function Home() {
 
         <section className="mt-20 lg:mt-60 custom-container">
           <h2 className="text-white text-3xl font-semibold text-center">
-            About latest tips,news and course
+            Nossos últimos posts.
           </h2>
           <p className="text-white mt-4 text-center">
             Lorem ipsum dolor sit amet, consectetur elit, sed do eiusmod tempor
             incididunt ut labore et dolore magna aliqua. Quis ipsum ultrices
           </p>
           <ul className="grid gap-y-8 md:grid-cols-2 lg:grid-cols-3 gap-x-8 mt-20">
-            <li>
-              <div className="text-white rounded-2xl">
-                <div className="h-80 relative">
-                  <Image
-                    src="/images/blog/post-1.png"
-                    alt="Dashed Line"
-                    fill
-                    className="z-20 rounded-2xl"
-                  />
-                </div>
-                <div className="px-3">
-                  <h3 className="mt-8 font-bold mb-2">
-                    5 Graphic Design Skills That Will Strengthen Your Creativity
-                  </h3>
-                  <span className="text-sm">Apr 9, 2020</span>
-                </div>
-              </div>
-            </li>
-            <li>
-              <div className="text-white rounded-2xl">
-                <div className="h-80 relative">
-                  <Image
-                    src="/images/blog/post-1.png"
-                    alt="Dashed Line"
-                    fill
-                    className="z-20 rounded-2xl"
-                  />
-                </div>
-                <div className="px-3">
-                  <h3 className="mt-8 font-bold mb-2">
-                    5 Graphic Design Skills That Will Strengthen Your Creativity
-                  </h3>
-                  <span className="text-sm">Apr 9, 2020</span>
-                </div>
-              </div>
-            </li>
-            <li>
-              <div className="text-white rounded-2xl">
-                <div className="h-80 relative">
-                  <Image
-                    src="/images/blog/post-1.png"
-                    alt="Dashed Line"
-                    fill
-                    className="z-20 rounded-2xl"
-                  />
-                </div>
-                <div className="px-3">
-                  <h3 className="mt-8 font-bold mb-2">
-                    5 Graphic Design Skills That Will Strengthen Your Creativity
-                  </h3>
-                  <span className="text-sm">Apr 9, 2020</span>
-                </div>
-              </div>
-            </li>
+            {posts.map((post) => (
+              <li key={post.id}>
+                <Link
+                  href={`/posts/${post.slug}`}
+                  className="text-white block rounded-2xl transition-all duration-400 hover:-translate-y-4"
+                >
+                  <div className="h-80 relative">
+                    <Image
+                      fill
+                      src={post.thumb}
+                      alt={post.summary}
+                      className="z-20 rounded-2xl"
+                    />
+                  </div>
+                  <div className="px-3">
+                    <h3 className="mt-8 font-bold mb-2">{post.title}</h3>
+                    <span className="text-sm text-gray-300">
+                      {format(post.createdAt, 'MMM dd, yyyy')}
+                    </span>
+                  </div>
+                </Link>
+              </li>
+            ))}
           </ul>
         </section>
 

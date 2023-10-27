@@ -1,12 +1,23 @@
 import { prisma } from '@/db'
 import { redirect } from 'next/navigation'
 import { Tabs } from './components/Tabs'
+import { Player } from './components/Player'
+import { getServerSession } from 'next-auth'
+import Image from 'next/image'
+import FolderIcon from '@/assets/FolderNotchOpen.png'
+import PlayIcon from '@/assets/PlayCircle.svg'
+import Clock from '@/assets/Clock.svg'
+import { BackButton } from './components/BackButton'
+import { Collapsible } from '@/app/(default)/courses/[slug]/components/Tabs/components/Collapsible'
 
 export default async function Lecture({
   params: { slug, id },
 }: {
   params: { slug: string; id: string }
 }) {
+  const session = await getServerSession()
+  if (!session || !session.user) redirect('/')
+
   const lecture = await prisma.lecture.findUnique({
     where: { id },
     include: {
@@ -17,28 +28,52 @@ export default async function Lecture({
     redirect('/')
   }
 
+  const enrolledCourse = await prisma.enrolledCourses.findFirst({
+    where: {
+      user: { email: session.user.email! },
+      courseId: lecture.Module.Course.id,
+    },
+  })
+
+  if (!enrolledCourse) redirect('/')
+
   const course = await prisma.course.findUnique({
-    where: { id: lecture.Module!.Course!.id! },
+    where: { id: lecture.Module.Course.id! },
+    include: { Modules: { include: { lectures: true } } },
   })
 
   if (!course) redirect('/')
 
+  const lectureProgress = await prisma.lectureProgress.findMany({
+    where: { courseId: course.id, user: { email: session.user.email! } },
+    orderBy: { updatedAt: 'desc' },
+  })
+  const currentLecture = lectureProgress.find(
+    (lec) => lecture.id === lec.lectureId,
+  )
+
   return (
     <>
       <header className="bg-primary-400 py-4">
-        <div className="lecture-container flex flex-col lg:flex-row lg:items-center lg:justify-between">
-          <div className="text-white">
-            <span className="font-semibold text-2xl mb-1 block">
-              {course.name}
-            </span>
-            <ul className="flex items-center gap-x-4">
-              <li>
-                <span>{course.modulesCount}</span>
+        <div className="lecture-container flex flex-col gap-y-6 lg:flex-row lg:items-center lg:justify-between">
+          <div className="text-white flex flex-col gap-y-3 lg:flex-row lg:items-center gap-x-8">
+            <div className="flex items-center gap-x-8">
+              <BackButton />
+              <span className="font-semibold text-2xl mb-1 block">
+                {course.name}
+              </span>
+            </div>
+            <ul className="flex flex-col gap-y-1 lg:flex-row lg:items-center gap-x-6">
+              <li className="flex items-center gap-x-2">
+                <Image src={FolderIcon} alt="Orange open folder png" />
+                <span>{course.modulesCount} seções</span>
               </li>
-              <li>
-                <span>{course.lecturesCount}</span>
+              <li className="flex items-center gap-x-2">
+                <Image src={PlayIcon} alt="Orange open folder png" />
+                <span>{course.lecturesCount} aulas</span>
               </li>
-              <li>
+              <li className="flex items-center gap-x-2">
+                <Image src={Clock} alt="Orange open folder png" />
                 <span>{course.duration}</span>
               </li>
             </ul>
@@ -53,36 +88,38 @@ export default async function Lecture({
           </div>
         </div>
       </header>
-      <main className="text-white min-h-screen pt-6 grid lg:grid-cols-7 gap-x-6 lecture-container mx-auto">
-        <div className="col-span-5 pb-60">
-          <div className="w-full">
-            <div style={{ paddingTop: '56.25%', position: 'relative' }}>
-              <iframe
-                src="https://player.vimeo.com/video/876040533?h=8edf1496ed&title=0&byline=0"
-                style={{
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  width: '100%',
-                  height: '100%',
-                }}
-                allow="autoplay; fullscreen; picture-in-picture"
-                allowFullScreen
-              ></iframe>
-            </div>
-          </div>
+      <main className="text-white min-h-screen pt-6 grid lg:grid-cols-10 gap-x-6 lecture-container mx-auto">
+        <div className="col-span-6 2xl:col-span-7 pb-60">
+          <Player
+            courseId={course.id}
+            lectureId={lecture.id}
+            videoSrc={lecture.video}
+            currentTime={currentLecture?.progress}
+          />
           <div className="mt-6">
             <h1 className="text-2xl font-semibold mb-10">{lecture.name}</h1>
             <Tabs lecture={lecture} />
           </div>
         </div>
-        <div className="bg-primary-400 col-span-2 px-8 py-4">
+        <div className="bg-primary-400 col-span-4 2xl:col-span-3 px-8 py-4">
           <div className="flex flex-col gap-y-2">
             <div className="flex items-center justify-between">
-              <span>Course Contents</span>
-              <span>15% Completed</span>
+              <span className="font-medium text-xl">Conteúdo</span>
+              <span>{enrolledCourse.progress}% Completed</span>
             </div>
-            <div className="h-2 bg-blue-300"></div>
+            <div className="mt-4">
+              <ul className="flex flex-col gap-y-4">
+                {course.Modules.map((module, index) => (
+                  <li key={module.id}>
+                    <Collapsible
+                      module={module}
+                      lectureId={lecture.id}
+                      defaultOpen={index === 0}
+                    />
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
       </main>

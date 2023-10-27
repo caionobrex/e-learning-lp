@@ -1,10 +1,15 @@
+import { PaymentMethod } from '@/enums/paymentMethod'
 import { PrismaClient } from '@prisma/client'
+import { MercadoPagoConfig, Payment } from 'mercadopago'
 
-export enum PaymentMethod {
-  CARD = 'CARD',
-  PIX = 'PIX',
-  BOLETO = 'BOLETO',
-}
+const DEFAULT_ACCESS_TOKEN =
+  'TEST-2152264619489912-111319-dd976587a0f667ea37629d3bc5719a0b-814760624'
+
+const client = new MercadoPagoConfig({
+  accessToken: DEFAULT_ACCESS_TOKEN,
+})
+
+const payment = new Payment(client)
 
 export class Pay {
   constructor(private readonly prisma: PrismaClient) {}
@@ -14,15 +19,17 @@ export class Pay {
     products,
     coupon,
     paymentMethod,
+    issuer,
     token,
     installments,
   }: {
     userId: string
     products: string[]
     coupon?: string
-    token?: string
+    token: string
+    issuer: number
     paymentMethod: PaymentMethod
-    installments?: number
+    installments: number
   }) {
     const user = await this.prisma.user.findUnique({ where: { id: userId } })
     const productsList = await this.prisma.course.findMany({
@@ -33,12 +40,12 @@ export class Pay {
       0,
     )
     const payload = {
-      transaction_amount: total,
       token,
-      description: 'Compra de curso na plataforma SkyLunar.',
       installments,
-      payment_method_id: '',
-      // issuer_id: req.issuer,
+      transaction_amount: total,
+      description: 'Compra de curso na plataforma SkyLunar.',
+      payment_method_id: paymentMethod,
+      issuer_id: issuer,
       payer: {
         email: user?.email,
         // identification: {
@@ -47,5 +54,19 @@ export class Pay {
         // }
       },
     }
+    try {
+      const res = await payment.create({ body: payload })
+      console.log(res)
+    } catch (err) {
+      // todo
+      console.log(err)
+    }
+    await this.prisma.enrolledCourses.createMany({
+      data: productsList.map((course) => ({
+        userId,
+        courseId: course.id,
+        progress: 0,
+      })),
+    })
   }
 }
